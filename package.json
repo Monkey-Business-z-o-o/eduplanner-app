@@ -1,0 +1,21 @@
+{
+    "name": "eduplanner-app",
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+      "dev": "svelte-kit dev",
+      "build": "svelte-kit build",
+      "preview": "svelte-kit preview"
+    },
+    "dependencies": {
+      "svelte": "^4.2.0"
+    },
+    "devDependencies": {
+      "@sveltejs/adapter-auto": "^3.3.1",
+      "@sveltejs/kit": "^2.10.1",
+      "prettier": "latest",
+      "prettier-plugin-svelte": "latest",
+      "vite": "latest"
+    }
+  }
+  
