@@ -1,55 +1,65 @@
 <script>
-	const options = [
-		{ name: "Harmonogram", icon: "📅", link: "/schedule" },
-		{ name: "Ustawienia", icon: "⚙️", link: "/settings" },
-		{ name: "Powiadomienia", icon: "❓", link: "/help" },
-		{ name: "Wyloguj", icon: "🚪", link: "/logout" }
+	export let menuItems = [
+		{ name: 'Harmonogram', icon: "📅", link: '/' },
+		{ name: 'O nas', icon: "🚪", link: '/about' },
+		{ name: 'Kontakt', icon: "❓", link: '/contact' }
 	];
 </script>
 
-<div class="sidebar">
-	<h1>EduPlaner</h1>
-	{#each options as option}
-		<a href={option.link}>
-			<span>{option.icon}</span>
-			{option.name}
-		</a>
-	{/each}
-</div>
+<nav class="sidebar">
+	<ul>
+		{#each menuItems as item}
+			<li>
+				<a href={item.link}>
+					<span class="icon">{item.icon}</span>
+					<span class="name">{item.name}</span>
+				</a>
+			</li>
+		{/each}
+	</ul>
+</nav>
 
 <style>
     .sidebar {
-        width: 250px;
-        background-color: #b64242;
-        color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px 0;
+        width: 200px;
+        background-color: #f4f4f4;
         height: 100vh;
+        padding: 20px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     }
 
-    .sidebar h1 {
-        font-size: 24px;
-        margin-bottom: 20px;
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar li {
+        margin: 10px 0;
     }
 
     .sidebar a {
         display: flex;
         align-items: center;
-        width: 100%;
-        padding: 10px 20px;
         text-decoration: none;
-        color: white;
-        font-size: 18px;
-        transition: background-color 0.3s;
+        color: #333;
+        padding: 10px;
+        border-radius: 4px;
+        transition: background-color 0.3s, color 0.3s;
     }
 
     .sidebar a:hover {
-        background-color: #9c3535;
+        background-color: #ddd;
+        color: #000;
     }
 
-    .sidebar a span {
+    .icon {
+        font-size: 1.5rem;
         margin-right: 10px;
+    }
+
+    .name {
+        font-size: 1rem;
+        font-weight: 500;
     }
 </style>
