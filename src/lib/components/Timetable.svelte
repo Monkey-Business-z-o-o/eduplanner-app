@@ -1,68 +1,93 @@
-<script lang="ts">
-  type Schedule = {
-    timeslots: { id: string, dayOfWeek: string, startTime: string, endTime: string }[],
-    lessons: { name: string, timeslot: string, room: string, subject: string, teacher: string, studentGroup: string }[],
-    rooms: { [key: string]: { name: string } }
-  };
+<script>
+  import { onMount } from 'svelte';
 
-  export let schedule: Schedule = {
-    timeslots: [
-      { id: '1', dayOfWeek: 'Poniedziałek', startTime: '08:00', endTime: '09:30' },
-      { id: '2', dayOfWeek: 'Wtorek', startTime: '10:00', endTime: '11:30' }
-    ],
-    lessons: [
-      { name: 'Lekcja 1', timeslot: '1', room: '101', subject: 'Matematyka', teacher: 'Jan Kowalski', studentGroup: '1A' },
-      { name: 'Lekcja 2', timeslot: '2', room: '102', subject: 'Fizyka', teacher: 'Anna Nowak', studentGroup: '1B' }
-    ],
-    rooms: {
-      '101': { name: 'Sala 101' },
-      '102': { name: 'Sala 102' }
+  let scheduleData = null; // Zmienna przechowująca dane
+  let loading = true; // Flaga dla stanu ładowania
+  let error = null; // Zmienna do przechowywania błędów
+
+  // Funkcja do pobrania danych z API
+  const fetchScheduleData = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/demo-data/SMALL');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.error('Error fetching data:', err);
+      throw err;
     }
   };
+
+  // Pobieranie danych po załadowaniu komponentu
+  onMount(async () => {
+    try {
+      scheduleData = await fetchScheduleData();
+    } catch (err) {
+      error = 'Failed to load schedule data.';
+    } finally {
+      loading = false;
+    }
+  });
 </script>
 
 <style>
-  table {
-    width: 100%;
-    border-collapse: collapse;
+  /* Dodaj dowolne style, aby ulepszyć wygląd */
+  .loading {
+    font-size: 1.2em;
+    color: gray;
   }
-  th, td {
+
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+
+  .schedule {
+    margin-top: 20px;
+  }
+
+  .timeslot {
+    margin-bottom: 10px;
+    padding: 10px;
     border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-  }
-  th {
-    background-color: #f4f4f4;
+    border-radius: 5px;
   }
 </style>
 
-<div class="timetable">
-  <table>
-    <thead>
-      <tr>
-        <th>Dzień</th>
-        <th>Godzina</th>
-        <th>Sala</th>
-        <th>Przedmiot</th>
-        <th>Nauczyciel</th>
-        <th>Grupa</th>
-      </tr>
-    </thead>
-    <tbody>
-      {#each schedule.timeslots as timeslot}
-        {#each schedule.lessons as lesson (lesson.name)}
-          {#if lesson.timeslot === timeslot.id}
-            <tr>
-              <td>{timeslot.dayOfWeek}</td>
-              <td>{timeslot.startTime} - {timeslot.endTime}</td>
-              <td>{schedule.rooms[lesson.room]?.name}</td>
-              <td>{lesson.subject}</td>
-              <td>{lesson.teacher}</td>
-              <td>{lesson.studentGroup}</td>
-            </tr>
-          {/if}
-        {/each}
+{#if loading}
+  <p class="loading">Loading schedule data...</p>
+{:else if error}
+  <p class="error">{error}</p>
+{:else if scheduleData}
+  <div class="schedule">
+    <h1>Schedule: {scheduleData.name}</h1>
+
+    <h2>Timeslots</h2>
+    {#each scheduleData.timeslots as timeslot}
+      <div class="timeslot">
+        <strong>{timeslot.dayOfWeek}</strong>: {timeslot.startTime} - {timeslot.endTime}
+      </div>
+    {/each}
+
+    <h2>Rooms</h2>
+    <ul>
+      {#each scheduleData.rooms as room}
+        <li>{room.name}</li>
       {/each}
-    </tbody>
-  </table>
-</div>
+    </ul>
+
+    <h2>Lessons</h2>
+    <ul>
+      {#each scheduleData.lessons as lesson}
+        <li>
+          <strong>{lesson.subject}</strong> with {lesson.teacher} (Group: {lesson.studentGroup})
+        </li>
+      {/each}
+    </ul>
+  </div>
+{:else}
+  <p>No data available.</p>
+{/if}
