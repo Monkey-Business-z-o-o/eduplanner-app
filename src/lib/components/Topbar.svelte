@@ -1,46 +1,55 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
-
-	function handleSolve() {
-		dispatch('solve');
-	}
-
-	function handleStopSolving() {
-		dispatch('stopSolving');
-	}
+	import { Navbar, NavBrand, NavUl, NavLi, Dropdown, DropdownItem } from 'flowbite-svelte';
 </script>
 
-<div class="topbar">
-	<button on:click={handleSolve}>Rozwiąż</button>
-	<button on:click={handleStopSolving}>Zatrzymaj rozwiązywanie</button>
-	<button>Zarządzaj</button>
-	<button>Opcje</button>
-</div>
+<Navbar class="bg-gray-700 text-white px-4 py-2 shadow-lg">
+	<!-- Logo -->
+	<NavBrand href="/" class="flex items-center">
+		<img
+			src="/logo-pjatk.png"
+			alt="EduPlaner"
+			class="h-6 mr-3"
+		/>
+		<span class="text-base font-medium">EduPlaner</span>
+	</NavBrand>
+
+	<!-- Navigation links -->
+	<NavUl class="flex items-center space-x-6 text-sm">
+		<NavLi
+			href="/"
+			class="text-white hover:text-blue-500 transition-colors duration-300">Demo UI
+		</NavLi>
+		<NavLi
+			href="/"
+			class="text-white hover:text-blue-500 transition-colors duration-300">Guide
+		</NavLi>
+		<NavLi
+			href="/"
+			class="text-white hover:text-blue-500 transition-colors duration-300">Rest API
+		</NavLi>
+		<!-- Dropdown for DATA -->
+		<Dropdown placement="bottom" trigger="click" class="relative">
+			<button class="text-white hover:text-blue-500 transition-colors duration-300">DATA</button>
+			<DropdownItem>Small</DropdownItem>
+			<DropdownItem>Large</DropdownItem>
+		</Dropdown>
+	</NavUl>
+
+	<!-- User Account Dropdown -->
+	<div class="ml-auto flex items-center">
+		<Dropdown placement="bottom-right" trigger="click">
+			<button class="flex items-center text-sm focus:outline-none text-white hover:text-blue-500 transition-colors duration-300">
+				<i class="fa fa-user-circle text-lg"></i>
+				<span class="ml-2">Panel użytkownika</span>
+			</button>
+			<DropdownItem>Zmień hasło</DropdownItem>
+			<DropdownItem>Wyloguj</DropdownItem>
+		</Dropdown>
+	</div>
+</Navbar>
 
 <style>
-    .topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #b64242;
-        color: white;
-        padding: 10px 20px;
-    }
-
-    .topbar button {
-        background-color: #9c3535;
-        border: none;
-        color: white;
-        padding: 10px 15px;
-        font-size: 16px;
+    .dropdown-trigger {
         cursor: pointer;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-    }
-
-    .topbar button:hover {
-        background-color: #822f2f;
     }
 </style>
