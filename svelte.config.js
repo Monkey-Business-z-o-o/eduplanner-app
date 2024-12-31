@@ -1,19 +1,17 @@
-import adapter from '@sveltejs/adapter-node'; // Zmieniono adapter na Node
+import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
+    // Consult https://svelte.dev/docs/kit/integrations
+    // for more information about preprocessors
     preprocess: vitePreprocess(),
 
     kit: {
-        adapter: adapter({
-            out: 'build', // Określ katalog wyjściowy
-            precompress: false, // Opcjonalnie: włącza kompresję plików
-            envPrefix: 'SVELTE_' // Opcjonalnie: prefiks dla zmiennych środowiskowych
-        }),
-        csrf: {
-            checkOrigin: true // Opcjonalnie: zabezpieczenie przed CSRF
-        }
+        // adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
+        // If your environment is not supported, or you settled on a specific environment, switch out the adapter.
+        // See https://svelte.dev/docs/kit/adapters for more information about adapters.
+        adapter: adapter()
     }
 };
 
