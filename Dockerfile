@@ -1,28 +1,35 @@
 # Faza budowania
 FROM node:18-slim AS build
- 
+
 WORKDIR /app
- 
+
 # Instalacja zależności
 COPY package*.json ./
 RUN npm install
- 
+
 # Kopiowanie źródeł i budowanie aplikacji
 COPY . .
-RUN npm run build && mv .svelte-kit/output /app/dist
- 
+RUN npm run build
+
 # Faza uruchamiania
 FROM node:18-slim AS runner
- 
+
 WORKDIR /app
- 
-# Kopiowanie wyników kompilacji
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/node_modules ./node_modules
- 
+
+# Kopiowanie tylko niezbędnych plików
+COPY --from=build /app/build ./build
+COPY --from=build /app/package.json ./
+COPY --from=build /app/package-lock.json ./
+
+# Instalacja tylko produkcyjnych zależności
+RUN npm ci --omit=dev
+
+# Zmienne środowiskowe
+ENV PORT=3000
+ENV NODE_ENV=production
+
 # Wystawienie portu
 EXPOSE 3000
- 
+
 # Uruchamianie aplikacji
-CMD ["npm", "run", "preview"]
+CMD ["node", "./build"]
