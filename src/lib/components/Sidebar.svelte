@@ -40,13 +40,24 @@
    subcategories: [
      { name: "Login", link: "/account/login" },
 		 { name: "Change password", link: "/account/password" },
-     { name: "Logout", link: "/account/logout" }
+     { name: "Sign Up", link: "/account/signup" },
    ]
   }
  ];
 
  function toggleCategory(index: number) {
   activeCategory = activeCategory === index ? null : index;
+ }
+
+ const logout = async () => {
+  try {
+   await fetch(`/account/logout`, {
+    method: 'POST'
+   });
+
+  } catch {
+   alert("Failed to logout");
+  }
  }
 </script>
 
@@ -86,6 +97,12 @@
          <span class="text-sm">{subcategory.name}</span>
         </a>
        {/each}
+       <button class="flex flex-col items-center w-full py-2 px-4 rounded-md hover:bg-white hover:text-black lg:flex-row lg:justify-start lg:px-4 transition-all duration-300 hover:scale-110"
+               on:click={() => {
+                logout().then(() => window.location.href = "/account/login")
+               }}>
+        <span class="text-sm">Logout</span>
+       </button>
       </div>
      {/if}
     </div>
