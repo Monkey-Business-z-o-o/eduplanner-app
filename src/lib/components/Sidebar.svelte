@@ -98,7 +98,9 @@
         </a>
        {/each}
        <button class="flex flex-col items-center w-full py-2 px-4 rounded-md hover:bg-white hover:text-black lg:flex-row lg:justify-start lg:px-4 transition-all duration-300 hover:scale-110"
-               on:click={() => logout()}>
+               on:click={() => {
+                logout().then(() => window.location.href = "/account/login")
+               }}>
         <span class="text-sm">Logout</span>
        </button>
       </div>
