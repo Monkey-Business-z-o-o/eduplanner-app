@@ -6,7 +6,6 @@ WORKDIR /app
 # Instalacja zależności
 COPY package*.json ./
 RUN npm install
-RUN npm install @sveltejs/adapter-node
 
 # Kopiowanie źródeł i budowanie aplikacji
 COPY . .
@@ -17,13 +16,20 @@ FROM node:18-slim AS runner
 
 WORKDIR /app
 
-# Kopiowanie wyników kompilacji
+# Kopiowanie tylko niezbędnych plików
 COPY --from=build /app/build ./build
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./
+COPY --from=build /app/package-lock.json ./
+
+# Instalacja tylko produkcyjnych zależności
+RUN npm ci --omit=dev
+
+# Zmienne środowiskowe
+ENV PORT=3000
+ENV NODE_ENV=production
 
 # Wystawienie portu
 EXPOSE 3000
 
 # Uruchamianie aplikacji
-CMD ["node", "build"]
+CMD ["node", "./build"]

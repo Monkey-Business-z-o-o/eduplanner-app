@@ -5,6 +5,10 @@ const eduplannetServerUrl = 'http://localhost:8081'
 
 export default defineConfig({
 	plugins: [sveltekit()],
+	build: {
+		outDir: 'dist', // Domyślny katalog wyjściowy
+		emptyOutDir: true, // Czyści katalog `dist` przed budową
+	},
 	server: {
 		port: 3000, // Frontend na porcie 3000
 		proxy: {
