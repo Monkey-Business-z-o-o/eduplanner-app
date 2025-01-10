@@ -4,21 +4,17 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [sveltekit()],
   build: {
-    outDir: 'dist', // Domyślny katalog wyjściowy
-    emptyOutDir: true, // Czyści katalog `dist` przed budową
+    outDir: 'dist', // Folder do którego zostanie zbudowany frontend
+    emptyOutDir: true, // Czy wyczyścić folder outDir przed zbudowaniem
   },
   server: {
-    port: 3000, // Frontend na porcie 3000
+    port: 3000, // Port na którym będzie uruchomiony frontend
     proxy: {
-      '/demo-data': {
+      // Przekierowanie wszystkich endpointów na backend
+      '^/(timetables|lessons|demo-data|timeslots|rooms|profile).*': {
         target: 'http://localhost:8081',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/demo-data/, '/demo-data'),
-      },
-      '/timetables': {
-        target: 'http://localhost:8081',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/timetables/, '/timetables'),
+        rewrite: (path) => path,
       },
     },
   },
