@@ -1,20 +1,35 @@
-# Użyj obrazu z Node.js do budowania frontendu
-FROM node:16
+# Faza budowania
+FROM node:18-slim AS build
 
-# Ustaw katalog roboczy
 WORKDIR /app
 
-# Skopiuj pliki projektu
-COPY . .
-
-# Zainstaluj zależności
+# Instalacja zależności
+COPY package*.json ./
 RUN npm install
 
-# Zbuduj frontend
+# Kopiowanie źródeł i budowanie aplikacji
+COPY . .
 RUN npm run build
 
-# Ustaw port dla aplikacji
+# Faza uruchamiania
+FROM node:18-slim AS runner
+
+WORKDIR /app
+
+# Kopiowanie tylko niezbędnych plików
+COPY --from=build /app/build ./build
+COPY --from=build /app/package.json ./
+COPY --from=build /app/package-lock.json ./
+
+# Instalacja tylko produkcyjnych zależności
+RUN npm ci --omit=dev
+
+# Zmienne środowiskowe
+ENV PORT=3000
+ENV NODE_ENV=production
+
+# Wystawienie portu
 EXPOSE 3000
 
-# Uruchom serwer aplikacji
-CMD ["npm", "start"]
+# Uruchamianie aplikacji
+CMD ["node", "./build"]
