@@ -26,7 +26,7 @@ RUN npm ci --omit=dev
 
 # Zmienne środowiskowe
 ENV PORT=3000
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 
 # Wystawienie portu
 EXPOSE 3000
