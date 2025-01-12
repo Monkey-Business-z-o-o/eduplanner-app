@@ -17,7 +17,7 @@ FROM node:18-slim AS runner
 WORKDIR /app
 
 # Kopiowanie tylko niezbędnych plików
-COPY --from=build /app/build ./build
+COPY --from=build /app/dist ./dist
 COPY --from=build /app/package.json ./
 COPY --from=build /app/package-lock.json ./
 
@@ -26,10 +26,10 @@ RUN npm ci --omit=dev
 
 # Zmienne środowiskowe
 ENV PORT=3000
-ENV NODE_ENV=development
+ENV NODE_ENV=production
 
 # Wystawienie portu
 EXPOSE 3000
 
-# Uruchamianie aplikacji
-CMD ["node", "./build"]
+# Uruchamianie aplikacji w trybie podglądu
+CMD ["npm", "run", "preview", "--", "--host"]
