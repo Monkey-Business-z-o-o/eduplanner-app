@@ -1,35 +1,30 @@
-# --- Etap 1: Budowanie aplikacji ---
+# --- Etap 1: Build SvelteKit (z adapter-node) ---
 FROM node:18-slim AS build
 
-# Ustaw katalog roboczy
 WORKDIR /app
-
-# Skopiuj pliki zależności projektu
 COPY package*.json ./
-
-# Zainstaluj zależności
 RUN npm install
 
-# Skopiuj cały kod projektu do obrazu
 COPY . .
+RUN npm run build   # Wygeneruje pliki w .svelte-kit/output (i package.json do uruchomienia serwera w Node)
 
-# Zbuduj aplikację (zakładam, że `npm run build` generuje folder "dist")
-RUN npm run build
-
-# --- Etap 2: Serwowanie aplikacji ---
+# --- Etap 2: Uruchamianie node’owej aplikacji ---
 FROM node:18-slim
 
-# Ustaw katalog roboczy
 WORKDIR /app
 
-# Skopiuj zbudowane pliki z poprzedniego etapu
-COPY --from=build /app/dist ./dist
+# Skopiuj pliki i node_modules z poprzedniego etapu
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package*.json ./
+COPY --from=build /app/.svelte-kit ./.svelte-kit
 
-# Wystaw port aplikacji
+# A jeśli adapter-node generuje coś w build/ (czasem tak bywa), wtedy:
+# COPY --from=build /app/build ./build
+
+# Opcjonalnie: zainstaluj PM2 albo inny proces manager, jeżeli potrzebujesz
+# RUN npm install -g pm2
+
 EXPOSE 3000
 
-# Instalacja serwera "serve" do obsługi statycznych plików
-RUN npm install -g serve
-
-# Komenda do serwowania aplikacji
-CMD ["serve", "-s", "dist", "-l", "3000"]
+# Uruchamiasz node’owy serwer SvelteKit
+CMD ["node", ".svelte-kit/output/server/index.js"]
