@@ -1,52 +1,35 @@
-# --- Etap 1: Budowanie frontendu ---
-FROM node:18 AS frontend-build
+# --- Etap 1: Budowanie aplikacji ---
+FROM node:18-slim AS build
 
 # Ustaw katalog roboczy
-WORKDIR /frontend
+WORKDIR /app
 
-# Skopiuj pliki frontendu (package.json, pnpm-lock.yaml itd.)
-COPY frontend/package*.json ./
+# Skopiuj pliki zależności projektu
+COPY package*.json ./
 
-# Zainstaluj zależności frontendu
+# Zainstaluj zależności
 RUN npm install
 
-# Skopiuj cały kod frontendu i zbuduj aplikację
-COPY frontend ./
+# Skopiuj cały kod projektu do obrazu
+COPY . .
+
+# Zbuduj aplikację (zakładam, że `npm run build` generuje folder "dist")
 RUN npm run build
 
-# --- Etap 2: Budowanie backendu ---
-FROM openjdk:17-jdk-slim AS backend-build
+# --- Etap 2: Serwowanie aplikacji ---
+FROM node:18-slim
 
 # Ustaw katalog roboczy
 WORKDIR /app
 
-# Skopiuj pliki Gradle i konfigurację backendu
-COPY gradlew gradlew.bat build.gradle settings.gradle ./
-COPY gradle ./gradle
-
-# Skopiuj kod źródłowy backendu
-COPY src ./src
-
-# Skopiuj wygenerowane pliki frontendu do backendu (np. do folderu resources/static)
-COPY --from=frontend-build /frontend/build ./src/main/resources/static
-
-# Nadaj uprawnienia do gradlew
-RUN chmod +x ./gradlew
-
-# Zbuduj aplikację backendową (Spring Boot) bez testów
-RUN ./gradlew build -x test --no-daemon
-
-# --- Etap 3: Finalny obraz ---
-FROM openjdk:17-jdk-slim
-
-# Ustaw katalog roboczy
-WORKDIR /app
-
-# Skopiuj zbudowany plik JAR z etapu budowania backendu
-COPY --from=backend-build /app/build/libs/EduPlanner-0.0.1-SNAPSHOT.jar ./app.jar
+# Skopiuj zbudowane pliki z poprzedniego etapu
+COPY --from=build /app/dist ./dist
 
 # Wystaw port aplikacji
-EXPOSE 8081
+EXPOSE 3000
 
-# Uruchom aplikację Spring Boot
-CMD ["java", "-jar", "app.jar"]
+# Instalacja serwera "serve" do obsługi statycznych plików
+RUN npm install -g serve
+
+# Komenda do serwowania aplikacji
+CMD ["serve", "-s", "dist", "-l", "3000"]
