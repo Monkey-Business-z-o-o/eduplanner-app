@@ -1,35 +1,30 @@
-# Faza budowania
+# --- Etap 1: Build SvelteKit (z adapter-node) ---
 FROM node:18-slim AS build
 
 WORKDIR /app
-
-# Instalacja zależności
 COPY package*.json ./
 RUN npm install
 
-# Kopiowanie źródeł i budowanie aplikacji
 COPY . .
-RUN npm run build
+RUN npm run build   # Wygeneruje pliki w .svelte-kit/output (i package.json do uruchomienia serwera w Node)
 
-# Faza uruchamiania
-FROM node:18-slim AS runner
+# --- Etap 2: Uruchamianie node’owej aplikacji ---
+FROM node:18-slim
 
 WORKDIR /app
 
-# Kopiowanie tylko niezbędnych plików
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/package.json ./
-COPY --from=build /app/package-lock.json ./
+# Skopiuj pliki i node_modules z poprzedniego etapu
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package*.json ./
+COPY --from=build /app/.svelte-kit ./.svelte-kit
 
-# Instalacja tylko produkcyjnych zależności
-RUN npm ci --omit=dev
+# A jeśli adapter-node generuje coś w build/ (czasem tak bywa), wtedy:
+# COPY --from=build /app/build ./build
 
-# Zmienne środowiskowe
-ENV PORT=3000
-ENV NODE_ENV=production
+# Opcjonalnie: zainstaluj PM2 albo inny proces manager, jeżeli potrzebujesz
+# RUN npm install -g pm2
 
-# Wystawienie portu
 EXPOSE 3000
 
-# Uruchamianie aplikacji w trybie podglądu
-CMD ["npm", "run", "preview", "--", "--host"]
+# Uruchamiasz node’owy serwer SvelteKit
+CMD ["node", ".svelte-kit/output/server/index.js"]
