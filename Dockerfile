@@ -1,31 +1,22 @@
 # --- Etap 1: Budowanie aplikacji ---
-FROM node:18-slim AS build
+    FROM node:18-slim AS build
 
-WORKDIR /app
-
-# Kopiowanie tylko package.json i package-lock.json na początek (dla cache npm install)
-COPY package*.json ./
-
-# Instalacja zależności
-RUN npm install
-
-# Kopiowanie wszystkich plików projektu do obrazu
-COPY . .
-
-# Budowanie aplikacji (wynik znajdzie się w folderze `build`)
-RUN npm run build
-
-
-# --- Etap 2: Uruchamianie aplikacji ---
-FROM node:18-slim
-
-WORKDIR /app
-
-# Kopiowanie całego katalogu `/app` z etapu budowy
-COPY --from=build /app /app
-
-# Otwieramy port aplikacji
-EXPOSE 3000
-
-# Uruchamiamy serwer aplikacji
-CMD ["node", "build/index.js"]
+    WORKDIR /app
+    COPY package*.json ./
+    RUN npm install
+    
+    COPY . .
+    RUN npm run build  # Generuje folder build/
+    
+    # --- Etap 2: Uruchamianie aplikacji (prod-like) ---
+    FROM node:18-slim
+    
+    WORKDIR /app
+    COPY --from=build /app /app
+    
+    ENV NODE_ENV=production
+    ENV PORT=3000
+    
+    EXPOSE 3000
+    CMD ["node", "build/index.js"]
+    
