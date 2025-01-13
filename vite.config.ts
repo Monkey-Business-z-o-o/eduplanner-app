@@ -17,6 +17,12 @@ export default defineConfig({
         // target: 'http://localhost:8081', // Adres lokalny do testowania
         changeOrigin: true,
         rewrite: (path) => path,
+        configure: (proxy) => {
+          // Dodanie nagłówka do żądania, aby backend mógł zidentyfikować, że jest to żądanie z frontendu
+          proxy.on('proxyRes', (proxyRes) => {
+            proxyRes.setHeader('Access-Control-Allow-Origin', '*');
+          });
+        }
       }
     },
   },
