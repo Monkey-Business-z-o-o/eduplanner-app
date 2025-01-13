@@ -13,10 +13,11 @@ export default defineConfig({
     proxy: {
       // Przekierowanie wszystkich endpointów na backend
       '^/(timetables|lessons|demo-data|timeslots|rooms|profile).*': {
-         target: 'http://eduplanner-backend:8081', // Użyj nazwy hosta kontenera backendu
-         changeOrigin: true,
-         rewrite: (path) => path,
-      },
+        target: 'http://172.18.0.4:8081', // Adres IP kontenera Docker dla backendu
+        // target: 'http://localhost:8081', // Adres lokalny do testowania
+        changeOrigin: true,
+        rewrite: (path) => path,
+      }
     },
   },
 });
