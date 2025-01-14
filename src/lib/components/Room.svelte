@@ -9,13 +9,10 @@
     let rooms: Room[] = [];
     let error: string | null = null;
 
-    // Dynamiczne pobieranie URL z zmiennej środowiskowej
-    const apiUrl = import.meta.env.VITE_API_URL;
-
     // Fetch rooms from the API
     onMount(async () => {
         try {
-            const response = await fetch(`${apiUrl}/rooms?page=0&size=20`, {
+            const response = await fetch('https://backend.kebson.fun/rooms?page=0&size=20', {
                 headers: {
                     'Accept': 'application/hal+json',
                 }

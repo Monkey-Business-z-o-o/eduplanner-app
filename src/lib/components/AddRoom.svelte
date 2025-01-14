@@ -3,13 +3,10 @@
     let responseMessage: string | null = null;
     let error: string | null = null;
 
-    // Dynamiczne pobieranie URL z zmiennej środowiskowej
-    const apiUrl = import.meta.env.VITE_API_URL;
-
     // Funkcja do wysyłania zapytania POST do backendu
     const addRoom = async () => {
         try {
-            const response = await fetch(`${apiUrl}/rooms`, {
+            const response = await fetch('https://backend.kebson.fun/rooms', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/hal+json',
