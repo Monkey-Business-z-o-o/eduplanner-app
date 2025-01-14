@@ -14,14 +14,26 @@ npx sv create
 npx sv create my-app
 ```
 
+## Dependencies
+
+Before you can run the app, you need to install the dependencies:
+
+```bash
+npm install
+npm install --save-dev @types/node
+npm install dotenv @types/dotenv
+```
+
 ## Developing
 
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
 npm run dev
+```
 
-# or start the server and open the app in a new browser tab
+or start the server and open the app in a new browser tab
+```bash
 npm run dev -- --open
 ```
 

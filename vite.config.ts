@@ -1,20 +1,26 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import dotenv from 'dotenv';
+
+// Ładowanie zmiennych środowiskowych
+dotenv.config();
+
+// Pobranie zmiennej API_URL z pliku .env lub ustawienie domyślnej wartości
+const API_URL = process.env.VITE_API_URL || 'http://localhost:8081';
 
 export default defineConfig({
   plugins: [sveltekit()],
   build: {
-    outDir: 'dist', // Folder do którego zostanie zbudowany frontend
-    emptyOutDir: true, // Czy wyczyścić folder outDir przed zbudowaniem
+    outDir: 'dist',  // Folder do którego zostanie zbudowany frontend
+    emptyOutDir: true,
   },
   server: {
-    port: 3000, // Port na którym będzie uruchomiony frontend
+    port: 3000,
     proxy: {
-      // Przekierowanie wszystkich endpointów na backend
       '^/(timetables|lessons|demo-data|timeslots|rooms|profile).*': {
-        target: 'http://localhost:8081',
+        target: API_URL,  // Użycie wartości z env
         changeOrigin: true,
-        rewrite: (path) => path,
+        rewrite: (path) => path, // Dodatkowe ustawienie przekierowania ścieżek, jeśli potrzeba
       },
     },
   },

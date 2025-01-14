@@ -17,10 +17,13 @@
     let loading: boolean = true;
     let error: string | null = null;
 
+    // Dynamiczne pobieranie URL z zmiennej środowiskowej
+    const apiUrl = import.meta.env.VITE_API_URL;
+
     // Fetch lessons from the API
     onMount(async () => {
         try {
-            const response = await fetch('http://localhost:8081/lessons?page=0&size=20', {
+            const response = await fetch(`${apiUrl}/lessons?page=0&size=20`, {
                 headers: {
                     'Accept': 'application/json' // Jeśli API zwraca dane w formacie JSON
                 }

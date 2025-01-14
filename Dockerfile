@@ -1,35 +1,35 @@
-# Faza budowania
+# --- Etap 1: Budowanie aplikacji ---
 FROM node:18-slim AS build
 
 WORKDIR /app
 
-# Instalacja zależności
+# Kopiowanie tylko package.json i package-lock.json na początek (dla cache npm install)
 COPY package*.json ./
-RUN npm install
 
-# Kopiowanie źródeł i budowanie aplikacji
+# Instalacja zależności
+RUN npm install
+RUN npm install --save-dev @types/node
+RUN npm install dotenv @types/dotenv
+
+# Kopiowanie wszystkich plików projektu do obrazu
 COPY . .
+
+# Budowanie aplikacji (wynik znajdzie się w folderze `build`)
 RUN npm run build
 
-# Faza uruchamiania
-FROM node:18-slim AS runner
+# --- Etap 2: Uruchamianie aplikacji ---
+FROM node:18-slim
 
 WORKDIR /app
 
-# Kopiowanie tylko niezbędnych plików
-COPY --from=build /app/build ./build
-COPY --from=build /app/package.json ./
-COPY --from=build /app/package-lock.json ./
+# Kopiowanie całego katalogu `/app` z etapu budowy
+COPY --from=build /app /app
 
-# Instalacja tylko produkcyjnych zależności
-RUN npm ci --omit=dev
+# Kopiowanie pliku .env (jeśli jest wymagany)
+COPY .env .env
 
-# Zmienne środowiskowe
-ENV PORT=3000
-ENV NODE_ENV=production
-
-# Wystawienie portu
+# Otwieramy port aplikacji
 EXPOSE 3000
 
-# Uruchamianie aplikacji
-CMD ["node", "./build"]
+# Uruchamiamy serwer aplikacji
+CMD ["node", "build/index.js"]

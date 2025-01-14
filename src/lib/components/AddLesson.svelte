@@ -24,10 +24,13 @@
         }
     };
 
+    // Dynamiczne pobieranie URL z zmiennej środowiskowej
+    const apiUrl = import.meta.env.VITE_API_URL;
+
     // Funkcja do wysyłania zapytania POST do backendu
     const addLesson = async () => {
         try {
-            const response = await fetch('http://localhost:8081/lessons', {
+            const response = await fetch(`${apiUrl}/lessons`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/hal+json',
