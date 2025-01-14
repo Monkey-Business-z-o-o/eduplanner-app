@@ -23,6 +23,8 @@ COPY --from=build /app/.svelte-kit ./.svelte-kit
 
 # Opcjonalnie: zainstaluj PM2 albo inny proces manager, jeżeli potrzebujesz
 # RUN npm install -g pm2
+ENV NODE_ENV=production
+ENV PORT=3000
 
 EXPOSE 3000
 
