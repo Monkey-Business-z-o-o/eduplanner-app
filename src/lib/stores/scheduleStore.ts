@@ -82,7 +82,7 @@ function createScheduleSolver() {
 
   async initialize(): Promise<void> {
    try {
-    const response = await fetch('http://backend:8081/demo-data');
+    const response = await fetch('https://backend.kebson.fun/demo-data');
     const data: string[] = await response.json();
     if (data && data.length > 0) {
      await this.setDemoData(data[0]);
@@ -105,8 +105,8 @@ function createScheduleSolver() {
     if (!state.demoDataId && !state.scheduleId) return;
 
     const path = state.scheduleId
-     ? `http://backend:8081/timetables/${state.scheduleId}`
-     : `http://backend:8081/demo-data/${state.demoDataId}`;
+     ? `https://backend.kebson.fun/timetables/${state.scheduleId}`
+     : `https://backend.kebson.fun/demo-data/${state.demoDataId}`;
 
     const response = await fetch(path);
     const schedule: Schedule = await response.json();
@@ -138,7 +138,7 @@ function createScheduleSolver() {
     const state = getState();
     if (!state.schedule) return;
 
-    const response = await fetch('http://backend:8081/timetables', {
+    const response = await fetch('https://backend.kebson.fun/timetables', {
      method: 'POST',
      headers: {
       'Content-Type': 'application/json',
@@ -160,7 +160,7 @@ function createScheduleSolver() {
     const state = getState();
     if (!state.scheduleId) return;
 
-    await fetch(`http://backend:8081/timetables/${state.scheduleId}`, {
+    await fetch(`https://backend.kebson.fun/timetables/${state.scheduleId}`, {
      method: 'DELETE'
     });
 
@@ -180,7 +180,7 @@ function createScheduleSolver() {
      return null;
     }
 
-    const response = await fetch('http://backend:8081/timetables/analyze', {
+    const response = await fetch('https://backend.kebson.fun/timetables/analyze', {
      method: 'PUT',
      headers: {
       'Content-Type': 'application/json'
