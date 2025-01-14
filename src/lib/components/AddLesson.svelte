@@ -27,7 +27,7 @@
     // Funkcja do wysyłania zapytania POST do backendu
     const addLesson = async () => {
         try {
-            const response = await fetch('http://localhost:8081/lessons', {
+            const response = await fetch('https://backend.kebson.fun/lessons', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/hal+json',

@@ -6,7 +6,7 @@
     // Funkcja do wysyłania zapytania POST do backendu
     const addRoom = async () => {
         try {
-            const response = await fetch('http://localhost:8081/rooms', {
+            const response = await fetch('https://backend.kebson.fun/rooms', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/hal+json',

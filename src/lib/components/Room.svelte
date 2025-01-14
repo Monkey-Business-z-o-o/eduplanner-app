@@ -12,7 +12,7 @@
     // Fetch rooms from the API
     onMount(async () => {
         try {
-            const response = await fetch('http://localhost:8081/rooms?page=0&size=20', {
+            const response = await fetch('https://backend.kebson.fun/rooms?page=0&size=20', {
                 headers: {
                     'Accept': 'application/hal+json',
                 }
