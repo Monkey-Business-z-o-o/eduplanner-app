@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import TimetableView from '../lib/components/TimetableView.svelte';
+  import TimetableView from '$lib/components/TimetableDemo.svelte';
   import Footer from '../lib/components/Footer.svelte';
   import ScoreAnalysisModal from '../lib/components/ScoreAnalysisModal.svelte';
   import { scheduleSolver } from '../lib/stores/scheduleStore';
