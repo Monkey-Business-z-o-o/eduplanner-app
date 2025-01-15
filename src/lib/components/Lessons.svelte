@@ -20,7 +20,7 @@
     // Fetch lessons from the API
     onMount(async () => {
         try {
-            const response = await fetch('https://backend.kebson.fun/lessons?page=0&size=20', {
+            const response = await fetch('http://localhost:8081/lessons?page=0&size=20', {
                 headers: {
                     'Accept': 'application/json' // Jeśli API zwraca dane w formacie JSON
                 }
