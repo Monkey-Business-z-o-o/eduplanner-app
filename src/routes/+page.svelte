@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import TimetableView from '$lib/components/TimetableDemo.svelte';
 	import Footer from '../lib/components/Footer.svelte';
@@ -15,9 +15,9 @@
 	let showAnalysisModal = false;
 	let activeTab = 'byRoom';
 
-  onMount(() => {
-    scheduleSolver.initialize(data.authtoken);
-  });
+    onMount(() => {
+        scheduleSolver.initialize(data.authtoken);
+    });
 
 	$: solving = $scheduleSolver.solving;
 	$: schedule = $scheduleSolver.schedule;

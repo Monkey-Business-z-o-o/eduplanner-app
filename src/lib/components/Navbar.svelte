@@ -1,3 +1,15 @@
+<script>
+    async function logout() {
+        // Make a request to the logout action
+        await fetch('/logout', {
+            method: 'GET',
+        });
+
+        // Optionally reload the page or navigate to a specific route
+        location.reload(); // This reloads the navbar state
+    }
+</script>
+
 <nav class="bg-red-700 border-gray-200 text-white">
     <div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto p-4">
         <a href="/" class="flex items-center space-x-2 bg-white hover:bg-red-200 transition-all duration-300 rounded-lg px-4 py-4">

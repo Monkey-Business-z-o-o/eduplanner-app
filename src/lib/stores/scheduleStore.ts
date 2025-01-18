@@ -89,7 +89,7 @@ function createScheduleSolver() {
 					headers: {'Authorization': `Bearer ${authtoken}`}
 				});				const data: string[] = await response.json();
 				if (data && data.length > 0) {
-					await this.setDemoData(data[0]);
+					await this.setDemoData(data[0], authtoken);
 				}
 			} catch {
 				this.setError('Failed to fetch demo data');
