@@ -1,9 +1,3 @@
-<!-- src/routes/login/+page.svelte -->
-
-<style>
-  @import '../../app.css';
-</style>
-
 <section class="bg-gray-50 dark:bg-gray-900">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a href="/" class="flex items-center space-x-2 bg-white hover:bg-red-200 transition-all duration-300 rounded-lg px-4 py-4">
@@ -46,3 +40,9 @@
         </div>
     </div>
 </section>
+
+<!-- src/routes/login/+page.svelte -->
+
+<style>
+	@import '../../app.css';
+</style>
