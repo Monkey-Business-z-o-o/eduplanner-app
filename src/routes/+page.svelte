@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte';
   import TimetableView from '$lib/components/TimetableDemo.svelte';
   import Footer from '../lib/components/Footer.svelte';
@@ -11,11 +11,12 @@
   import AddRoom from '$lib/components/AddRoom.svelte';
   import Room from '$lib/components/Room.svelte';
 
+  export let data: { authtoken: string };
   let showAnalysisModal = false;
   let activeTab = 'byRoom';
 
   onMount(() => {
-    scheduleSolver.initialize();
+    scheduleSolver.initialize(data.authtoken);
   });
 
   $: solving = $scheduleSolver.solving;
@@ -23,6 +24,7 @@
 </script>
 
 <div class="min-h-screen flex">
+
   <!-- Sidebar -->
   <Sidebar />
 

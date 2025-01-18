@@ -1,3 +1,15 @@
+<script>
+    async function logout() {
+        // Make a request to the logout action
+        await fetch('/logout', {
+            method: 'GET',
+        });
+
+        // Optionally reload the page or navigate to a specific route
+        location.reload(); // This reloads the navbar state
+    }
+</script>
+
 <nav class="bg-red-700 border-gray-200 text-white">
     <div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto p-4">
         <a href="/" class="flex items-center space-x-2 bg-white hover:bg-red-200 transition-all duration-300 rounded-lg px-4 py-4">
@@ -13,6 +25,10 @@
                 <span>Log in</span>
             </a>
             <a href="/register" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg md:px-6 md:py-3 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Register</a>
+            <button onclick={logout} class="flex items-center space-x-2 text-white hover:bg-white hover:text-black hover:scale-105 focus:ring-4 focus:ring-pink-300 font-medium rounded-lg text-sm md:text-lg md:px-6 md:py-3 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-pink-500 transition-all duration-300">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Log out</span>
+            </button>
             <button data-collapse-toggle="mega-menu-icons" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mega-menu-icons" aria-expanded="false">
                 <span class="sr-only">Open main menu</span>
                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">

@@ -60,6 +60,7 @@ interface ScheduleState {
  solving: boolean;
  demoDataId: string | null;
  scheduleId: string | null;
+ authtoken: string | null;
  error: string | null;
  autoRefreshInterval: number | null;
 }
@@ -71,6 +72,7 @@ function createScheduleSolver() {
   solving: false,
   demoDataId: null,
   scheduleId: null,
+  authtoken: null,
   error: null,
   autoRefreshInterval: null
  };
@@ -80,20 +82,23 @@ function createScheduleSolver() {
  const store = {
   subscribe,
 
-  async initialize(): Promise<void> {
+  async initialize(authtoken: string): Promise<void> {
    try {
-    const response = await fetch('https://backend.kebson.fun/demo-data');
+    const response = await fetch('https://backend.kebson.fun/demo-data', {
+     method: "GET",
+     headers: {'Authorization': `Bearer ${authtoken}`}
+    });
     const data: string[] = await response.json();
     if (data && data.length > 0) {
-     await this.setDemoData(data[0]);
+     await this.setDemoData(data[0], authtoken);
     }
    } catch {
     this.setError('Failed to fetch demo data');
    }
   },
 
-  async setDemoData(demoId: string): Promise<void> {
-   update(state => ({ ...state, demoDataId: demoId, scheduleId: null }));
+  async setDemoData(demoId: string, authtoken: string): Promise<void> {
+   update(state => ({ ...state, demoDataId: demoId, scheduleId: null, authtoken: authtoken}));
    await this.refreshSchedule();
   },
 
@@ -102,13 +107,16 @@ function createScheduleSolver() {
     update(state => ({ ...state, error: null }));
 
     const state = getState();
-    if (!state.demoDataId && !state.scheduleId) return;
+    if (!state.demoDataId && !state.scheduleId && !state.authtoken) return;
 
     const path = state.scheduleId
      ? `https://backend.kebson.fun/timetables/${state.scheduleId}`
      : `https://backend.kebson.fun/demo-data/${state.demoDataId}`;
 
-    const response = await fetch(path);
+    const response = await fetch(path, {
+     method: "GET",
+     headers: {'Authorization': `Bearer ${state.authtoken}`}
+    });
     const schedule: Schedule = await response.json();
 
     update(s => ({
@@ -142,7 +150,8 @@ function createScheduleSolver() {
      method: 'POST',
      headers: {
       'Content-Type': 'application/json',
-      'Accept': 'text/plain'
+      'Accept': 'text/plain',
+      'Authorization': `Bearer ${state.authtoken}`
      },
      body: JSON.stringify(state.schedule)
     });
@@ -161,7 +170,10 @@ function createScheduleSolver() {
     if (!state.scheduleId) return;
 
     await fetch(`https://backend.kebson.fun/timetables/${state.scheduleId}`, {
-     method: 'DELETE'
+     method: 'DELETE',
+     headers: {
+      'Authorization': `Bearer ${state.authtoken}`
+     },
     });
 
     this.stopAutoRefresh();
@@ -183,7 +195,8 @@ function createScheduleSolver() {
     const response = await fetch('https://backend.kebson.fun/timetables/analyze', {
      method: 'PUT',
      headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${state.authtoken}`
      },
      body: JSON.stringify(state.schedule)
     });
