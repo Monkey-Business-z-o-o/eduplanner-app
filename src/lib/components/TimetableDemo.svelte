@@ -5,9 +5,9 @@
   import { onMount } from 'svelte';
 
   interface Schedule {
-    timeslots: Array<{ id: string; dayOfWeek: string; startTime: string; endTime: string }>;
-    rooms: Array<{ id: string; name: string }>;
-    lessons: Array<{ timeslot: string; room: string; teacher: string; studentGroup: string; subject: string; id: string }>;
+    timeslots: Array<{ id: string; dayOfWeek: string; startTime: string; endTime: string }> ;
+    rooms: Array<{ id: string; name: string }> ;
+    lessons: Array<{ timeslot: string; room: string; teacher: string; studentGroup: string; subject: string; id: string }> ;
   }
 
   interface Header {
@@ -119,6 +119,9 @@
   }
 
   onMount(async () => {
+    // Dodajemy console.log do sprawdzenia wartości zmiennej środowiskowej
+    console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
+
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/demo-data/SMALL`);
       if (!response.ok) {
@@ -133,6 +136,7 @@
     }
   });
 </script>
+
 
 <!-- Przycisk dodawania nowej lekcji -->
 <button
