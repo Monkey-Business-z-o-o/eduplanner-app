@@ -18,4 +18,4 @@ ENV NODE_ENV=production
 ENV PORT=3000
 
 EXPOSE 3000
-ONBUILD CMD ["node", "build/index.js"]
+CMD ["node", "build/index.js"]

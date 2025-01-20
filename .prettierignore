@@ -2,3 +2,25 @@
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
+
+# Docker
+Dockerfile
+
+# Node.js dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Coverage reports
+coverage/
+
+# Minified files
+*.min.js
+
+# Log files
+*.log
+
+# Environment files
+*.env
