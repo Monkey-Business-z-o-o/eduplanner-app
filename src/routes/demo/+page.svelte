@@ -39,10 +39,10 @@
 				teacher: 'Mr. Smith',
 				studentGroup: 'Group A',
 				timeslot: { id: '1', dayOfWeek: 'Monday', startTime: '08:00', endTime: '09:00' },
-				room: { id: '1', name: 'Room 101' }
+				room: { id: '1', name: 'rooms 101' }
 			}
 		],
-		rooms: [{ id: '1', name: 'Room 101' }]
+		rooms: [{ id: '1', name: 'rooms 101' }]
 	};
 
 	let activeTab: 'byRoom' | 'byTeacher' | 'byStudentGroup' = 'byRoom';

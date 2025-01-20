@@ -1,34 +1,12 @@
 <script lang="ts">
-  import UnassignedLessons from "$lib/components/UnassignedLessons.svelte";
-  import LessonColor from '$lib/components/LessonColor.svelte';
+  import LessonColor from '$lib/components/lessons/LessonColor.svelte';
   import { format } from 'date-fns';
   import { onMount } from 'svelte';
-
-  interface Schedule {
-    timeslots: Array<{ id: string; dayOfWeek: string; startTime: string; endTime: string }> ;
-    rooms: Array<{ id: string; name: string }> ;
-    lessons: Array<{ timeslot: string; room: string; teacher: string; studentGroup: string; subject: string; id: string }> ;
-  }
-
-  interface Header {
-    id: string;
-    name: string;
-  }
 
   export let schedule: Schedule;
   export let activeTab: 'byRoom' | 'byTeacher' | 'byStudentGroup';
 
   let showTimeslots = true;
-  let showAddForm = false;
-
-  // Stan dla nowej lekcji
-  let newLesson = {
-    subject: '',
-    teacher: '',
-    studentGroup: '',
-    room: null,
-    timeslot: null,
-  };
 
   $: view = getViewData(schedule, activeTab);
 
@@ -62,131 +40,7 @@
   function formatTime(time: string) {
     return format(new Date(`2024-01-01T${time}`), 'HH:mm');
   }
-
-  async function handleDelete(id: string) {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/lessons/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Accept': 'application/hal+json',
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Nie udało się usunąć lekcji');
-      }
-
-      // Aktualizacja stanu po usunięciu
-      schedule.lessons = schedule.lessons.filter(lesson => lesson.id !== id);
-    } catch (err) {
-      console.error('Błąd podczas usuwania lekcji:', err);
-    }
-  }
-
-  async function handleAdd() {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/lessons`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/hal+json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newLesson),
-      });
-
-      if (!response.ok) {
-        throw new Error('Nie udało się dodać lekcji');
-      }
-
-      const addedLesson = await response.json();
-
-      // Aktualizacja stanu po dodaniu
-      schedule.lessons = [...schedule.lessons, addedLesson];
-
-      // Reset formularza
-      newLesson = {
-        subject: '',
-        teacher: '',
-        studentGroup: '',
-        room: null,
-        timeslot: null,
-      };
-      showAddForm = false;
-    } catch (err) {
-      console.error('Błąd podczas dodawania lekcji:', err);
-    }
-  }
-
-  onMount(async () => {
-    // Dodajemy console.log do sprawdzenia wartości zmiennej środowiskowej
-    console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
-
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/demo-data/SMALL`);
-      if (!response.ok) {
-        throw new Error('Nie udało się pobrać planu zajęć');
-      }
-      const data: Schedule = await response.json();
-      schedule = data;
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.error(err.message);
-      }
-    }
-  });
 </script>
-
-
-<!-- Przycisk dodawania nowej lekcji -->
-<button
-        class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        on:click={() => showAddForm = !showAddForm}
->
-  {showAddForm ? 'Anuluj dodawanie' : 'Dodaj nową lekcję'}
-</button>
-
-<!-- Formularz dodawania nowej lekcji -->
-{#if showAddForm}
-  <div class="mb-8 p-4 bg-gray-50 rounded-lg">
-    <h3 class="text-lg font-bold mb-4">Dodaj nową lekcję</h3>
-    <form on:submit|preventDefault={handleAdd} class="space-y-4">
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Przedmiot</label>
-        <input
-                type="text"
-                bind:value={newLesson.subject}
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                required
-        />
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Nauczyciel</label>
-        <input
-                type="text"
-                bind:value={newLesson.teacher}
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                required
-        />
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Grupa uczniów</label>
-        <input
-                type="text"
-                bind:value={newLesson.studentGroup}
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                required
-        />
-      </div>
-      <button
-              type="submit"
-              class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Dodaj lekcję
-      </button>
-    </form>
-  </div>
-{/if}
 
 <!-- Sekcja Timeslots -->
 <section class="mt-8">
@@ -225,7 +79,10 @@
                   <LessonColor
                           {lesson}
                           selectedRole={mapActiveTabToRole(activeTab)}
-                          onDelete={handleDelete}
+                          onDelete={() => {}}
+                          onEdit={() => {}}
+                          onUpdate={() => {}}
+                          onCancelEdit={() => {}}
                   />
                 {/each}
               </td>
@@ -237,6 +94,3 @@
     </div>
   {/if}
 </section>
-
-<!-- Sekcja Unassigned Lessons -->
-<UnassignedLessons {schedule} {activeTab} />

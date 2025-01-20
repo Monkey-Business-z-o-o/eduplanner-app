@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LessonColor from '$lib/components/LessonColor.svelte';
+	import LessonColor from '$lib/components/lessons/LessonColor.svelte';
 	import { format } from 'date-fns';
 
 	interface Schedule {

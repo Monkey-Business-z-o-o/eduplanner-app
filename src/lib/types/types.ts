@@ -16,8 +16,8 @@ export interface Lesson {
 	subject: string;
 	teacher: string;
 	studentGroup: string;
-	timeslot?: number;
-	room?: number;
+	timeslot: number;
+	room: string;
 }
 
 export interface Schedule {
