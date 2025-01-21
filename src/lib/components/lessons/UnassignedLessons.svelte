@@ -1,6 +1,6 @@
 <script lang="ts">
   import LessonColor from '$lib/components/lessons/LessonColor.svelte';
-  import SectionHeader from '../SectionHeader.svelte';
+  import SectionHeader from '../common/SectionHeader.svelte';
   import AddLesson from './AddLesson.svelte';  // Zaimportuj komponent formularza dodawania lekcji
   import type { Schedule, Lesson } from '$lib/types/types.ts';
 

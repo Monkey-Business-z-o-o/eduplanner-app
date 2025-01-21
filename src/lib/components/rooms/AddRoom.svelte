@@ -30,7 +30,7 @@
 </script>
 
 <div class="max-w-md mt-10 p-6 bg-white rounded-lg shadow-md">
-  <button on:click={() => isMenuOpen = !isMenuOpen} class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-left">
+  <button on:click={() => isMenuOpen = !isMenuOpen} class="w-full py-2 px-4 bg-red-900 text-white font-semibold rounded-md shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 text-left">
     Add New Room
   </button>
 
@@ -43,12 +43,12 @@
                 id="roomName"
                 bind:value={newRoomName}
                 required
-                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                class="mt-1 block w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm"
         />
       </div>
       <button
               type="submit"
-              class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              class="w-full py-2 px-4 bg-red-800 text-white font-semibold rounded-md shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
       >
         Add Room
       </button>

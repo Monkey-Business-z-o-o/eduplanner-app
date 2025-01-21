@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SectionHeader from '../SectionHeader.svelte';
+  import SectionHeader from '../common/SectionHeader.svelte';
   import AddRoom from './AddRoom.svelte';
   import type { Room } from '$lib/types/types';
 

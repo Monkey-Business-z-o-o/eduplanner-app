@@ -8,16 +8,16 @@
     }
 </script>
 
-<div class="p-4 bg-gray-50 border-b border-gray-200">
+<div class="p-4 bg-red-50 border-b border-red-200 rounded-t-md shadow-sm">
     <button
             type="button"
-            class="flex items-center space-x-2 text-lg font-semibold {textColor} hover:opacity-80 transition duration-200"
+            class="flex items-center justify-between w-full text-lg font-semibold {textColor} hover:text-gray-600 hover:opacity-90 transition duration-200"
             on:click={toggle}
             aria-expanded={isOpen}
     >
         <span>{title}</span>
         <svg
-                class="w-5 h-5 transform transition-transform duration-200 {isOpen ? 'rotate-180' : ''}"
+                class="w-5 h-5 transform transition-transform duration-300 {isOpen ? 'rotate-180' : ''}"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

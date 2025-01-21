@@ -1,92 +1,73 @@
 <script>
-    async function logout() {
-        // Make a request to the logout action
-        await fetch('/logout', {
-            method: 'GET',
-        });
+	export let data;
+	export let isLoggedOut;
 
-        // Optionally reload the page or navigate to a specific route
-        location.reload(); // This reloads the navbar state
-    }
+	async function logout() {
+		// Wylogowanie użytkownika
+		await fetch('/logout', {
+			method: 'GET',
+		});
+		location.reload(); // Odświeżenie stanu aplikacji
+	}
 </script>
 
-<nav class="bg-red-700 border-gray-200 text-white">
-    <div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto p-4">
-        <a href="/static" class="flex items-center space-x-2 bg-white hover:bg-red-200 transition-all duration-300 rounded-lg px-4 py-4">
-            <img src="/logo-pjatk.png" alt="EduPlaner Logo" class="w-20 h-20" />
-            <span class="text-xl text-transparent bg-clip-text bg-[linear-gradient(to_right,theme(colors.indigo.400),theme(colors.indigo.100),theme(colors.sky.400),theme(colors.fuchsia.400),theme(colors.sky.400),theme(colors.indigo.100),theme(colors.indigo.400))] font-bold">
-                EduPlaner
-            </span>
-        </a>
+<div class="bg-gradient-to-r from-black to-red-800 text-white py-8 px-6 shadow-lg">
+	<div class="container mx-auto flex flex-col sm:flex-row items-center justify-between lg:space-x-8">
+		<!-- Logo -->
+		<a href="/" class="flex items-center space-x-2 bg-white hover:bg-red-200 transition-all duration-300 rounded-lg px-4 py-4">
+			<img src="/logo-pjatk.png" alt="EduPlaner Logo" class="w-12 h-12 sm:w-16 sm:h-16" />
+			<span class="text-lg sm:text-xl text-transparent bg-clip-text bg-[linear-gradient(to_right,theme(colors.indigo.400),theme(colors.indigo.100),theme(colors.sky.400),theme(colors.fuchsia.400),theme(colors.sky.400),theme(colors.indigo.100),theme(colors.indigo.400))] font-bold">
+				EduPlaner
+			</span>
+		</a>
 
-		<div class="flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
-			<a
-				href="/login"
-				class="flex items-center space-x-2 text-white hover:bg-white hover:text-black hover:scale-105 focus:ring-4 focus:ring-pink-300 font-medium rounded-lg text-sm md:text-lg md:px-6 md:py-3 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-pink-500 transition-all duration-300"
-			>
-				<i class="fas fa-key"></i>
-				<span>Log in</span>
-			</a>
-			<a
-				href="/register"
-				class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg md:px-6 md:py-3 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-				>Register</a
-			>
-			<button onclick={logout} class="flex items-center space-x-2 text-white hover:bg-white hover:text-black hover:scale-105 focus:ring-4 focus:ring-pink-300 font-medium rounded-lg text-sm md:text-lg md:px-6 md:py-3 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-pink-500 transition-all duration-300">
-				<i class="fa-solid fa-right-from-bracket"></i>
-				<span>Log out</span>
-			</button>
-			<button
-				data-collapse-toggle="mega-menu-icons"
-				type="button"
-				class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-				aria-controls="mega-menu-icons"
-				aria-expanded="false"
-			>
-				<span class="sr-only">Open main menu</span>
-				<svg
-					class="w-5 h-5"
-					aria-hidden="true"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 17 14"
-				>
-					<path
-						stroke="currentColor"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M1 1h15M1 7h15M1 13h15"
-					/>
-				</svg>
-			</button>
-		</div>
-		<div
-			id="mega-menu-icons"
-			class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-		>
-			<ul
-				class="flex flex-col mt-4 font-medium md:flex-row md:mt-0 md:space-x-8 rtl:space-x-reverse"
-			>
-				<li class="relative group">
-					<a
-						href="/schedule"
-						class="block py-2 px-3 text-white hover:bg-white hover:text-black hover:scale-105 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm md:text-lg md:px-6 md:py-3 md:border-0 dark:text-blue-500 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700 transition-all duration-300"
+		<!-- Informacja o użytkowniku -->
+		<div class="mt-4 sm:mt-0 flex-1 sm:flex sm:justify-between sm:items-center">
+			{#if data.username}
+				<div class="flex items-center space-x-4">
+					<div class="bg-white p-3 rounded-full">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+						</svg>
+					</div>
+					<div>
+						<h1 class="text-lg sm:text-3xl font-bold">Witaj, {data.username}!</h1>
+						<p class="text-sm sm:text-base text-blue-100 mt-1">Miło Cię znowu widzieć w systemie EduPlaner</p>
+					</div>
+				</div>
+			{:else if isLoggedOut}
+				<div>
+					<h1 class="text-lg sm:text-2xl font-bold text-white">Wylogowano pomyślnie</h1>
+					<p class="text-sm sm:text-base text-gray-600 mt-1">Zaloguj się, aby generować grafik</p>
+				</div>
+			{:else}
+				<div>
+					<h1 class="text-lg sm:text-2xl font-bold text-white">Witaj w EduPlaner</h1>
+					<p class="text-sm sm:text-base text-gray-200 mt-1">Zaloguj się, aby generować grafik</p>
+				</div>
+			{/if}
+
+			<!-- Przyciski logowania -->
+			<div class="flex items-center space-x-2 mt-4 sm:mt-0">
+				{#if data.username}
+					<button
+							onclick={logout}
+							class="flex items-center space-x-2 text-white bg-red-700 hover:bg-white hover:text-black hover:scale-105 focus:ring-4 focus:ring-red-300 font-medium rounded-lg px-4 py-2 transition-all duration-300"
 					>
-						<i class="fas fa-calendar-alt"></i>
-						<span>Schedule</span>
+						<i class="fa-solid fa-right-from-bracket"></i>
+						<span>Wyloguj</span>
+					</button>
+				{:else}
+					<a href="/login" class="flex items-center space-x-2 text-white bg-blue-600 hover:bg-blue-700 hover:scale-105 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg px-4 py-2 transition-all duration-300">
+						<i class="fa-solid fa-right-to-bracket"></i>
+						<span>Zaloguj</span>
 					</a>
-				</li>
-				<li class="relative group">
-					<a
-						href="/demo"
-						class="block py-2 px-3 text-white hover:bg-white hover:text-black hover:scale-105 focus:ring-4 focus:ring-pink-300 font-medium rounded-lg text-sm md:text-lg md:px-6 md:py-3 md:border-0 dark:text-blue-500 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700 transition-all duration-300"
-					>
-						<i class="fas fa-play"></i>
-						<span>Demo</span>
+					<a href="/register" class="flex items-center space-x-2 text-white bg-green-600 hover:bg-green-700 hover:scale-105 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-4 py-2 transition-all duration-300">
+						<i class="fa-solid fa-user-plus"></i>
+						<span>Rejestracja</span>
 					</a>
-				</li>
-			</ul>
+				{/if}
+			</div>
 		</div>
 	</div>
-</nav>
+</div>

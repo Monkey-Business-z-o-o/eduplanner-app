@@ -1,5 +1,5 @@
 <script lang="ts">
-    import SectionHeader from '../SectionHeader.svelte';
+    import SectionHeader from '../common/SectionHeader.svelte';
     import type { Schedule } from '$lib/types/types.ts';
 
     export let schedule: Schedule;
@@ -47,11 +47,11 @@
     }
 </script>
 
-<div class="max-w-md mt-10 p-6 bg-red-300 rounded-lg shadow-md">
+<div class="max-w-md mt-10 p-6 bg-gray-300 rounded-lg shadow-md">
     <SectionHeader title="Dodaj nową lekcję" bind:isOpen />
 
     {#if isOpen}
-        <div class="bg-indigo-100 p-4 rounded-lg shadow-sm mt-4"> <!-- Tło dla rozwijanego formularza -->
+        <div class="bg-red-50 p-4 rounded-lg shadow-sm mt-4"> <!-- Tło dla rozwijanego formularza -->
             <form on:submit|preventDefault={handleAdd} class="space-y-4">
                 <div>
                     <label for="subject" class="block text-sm font-medium text-gray-700">Przedmiot</label>
@@ -85,7 +85,7 @@
                 </div>
                 <button
                         type="submit"
-                        class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        class="w-full py-2 px-4 bg-red-900 text-white font-semibold rounded-md shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                 >
                     Dodaj lekcję
                 </button>
