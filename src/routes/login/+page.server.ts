@@ -38,6 +38,7 @@ export const actions = {
                     maxAge: 60 * 60 * 24 * 7,
                 });
 
+                // Redirect to the homepage (or any other page)
                 throw redirect(303, '/');
             } else {
                 const errorText = await response.text();

@@ -86,7 +86,7 @@
 		<form on:submit|preventDefault={handleSubmit} class="space-y-2">
 			<!-- Pola formularza do edycji lekcji -->
 			<div>
-				<label for="subject" class="text-sm text-gray-600">Subject</label>
+				<label for="subject" class="text-sm text-gray-600">Przedmiot</label>
 				<input
 				    id="subject"
 						type="text"
@@ -95,7 +95,7 @@
 				/>
 			</div>
 			<div>
-				<label for="teacher" class="text-sm text-gray-600">Teacher</label>
+				<label for="teacher" class="text-sm text-gray-600">Nauczyciel</label>
 				<input
 				    id="teacher"
 						type="text"
@@ -104,7 +104,7 @@
 				/>
 			</div>
 			<div>
-				<label for="studentGroup" class="text-sm text-gray-600">Student Group</label>
+				<label for="studentGroup" class="text-sm text-gray-600">Grupa</label>
 				<input
 				    id="studentGroup"
 						type="text"
@@ -113,7 +113,7 @@
 				/>
 			</div>
 			<div>
-				<label for="room" class="text-sm text-gray-600">Room</label>
+				<label for="room" class="text-sm text-gray-600">Pokój</label>
 				<input
 				    id="room"
 						type="text"
@@ -126,14 +126,14 @@
 						type="submit"
 						class="px-2 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
 				>
-					Save
+					Zapisz
 				</button>
 				<button
 						type="button"
 						class="px-2 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700"
 						on:click={onCancelEdit}
 				>
-					Cancel
+					Anuluj
 				</button>
 			</div>
 		</form>

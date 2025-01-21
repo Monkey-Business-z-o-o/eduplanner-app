@@ -1,5 +1,6 @@
+// src/routes/register/+page.server.ts
 import type { Actions } from './$types';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 
 export const actions = {
 	login: async ({ request, cookies }) => {
@@ -8,28 +9,46 @@ export const actions = {
 		const lastName = formData.get('lastName');
 		const login = formData.get('login');
 		const password = formData.get('password');
+		const remember = formData.get('remember') === 'on';
 
-		const response = await fetch('https://backend.kebson.fun/register', {
-			method: 'POST',
-			headers: { 'content-type': 'application/json' },
-			body: JSON.stringify({ firstName: firstName, lastName: lastName, login: login, password: password }),
-		});
-
-		if (response.ok) {
-			const data = await response.json();
-
-			// Set the cookie with the token
-			cookies.set('authtoken', data.token, {
-				path: '/',
-				httpOnly: true, // Ensures the cookie isn't accessible via JavaScript
-				secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-				maxAge: 60 * 60 * 24 * 7, // 1 week expiration
+		try {
+			const response = await fetch('https://backend.kebson.fun/register', {
+				method: 'POST',
+				headers: { 'content-type': 'application/json' },
+				body: JSON.stringify({ firstName, lastName, login, password }),
 			});
-			return { success: true };
-		} else {
-			// Handle failed login (optional)
-			cookies.delete('authtoken', { path: '/' });
-			return fail(401, { message: 'Invalid credentials' });
+
+			if (response.ok) {
+				const data = await response.json();
+
+				if (remember) {
+					cookies.set('savedLogin', login as string, {
+						path: '/',
+						maxAge: 60 * 60 * 24 * 30,
+						httpOnly: false
+					});
+				}
+
+				throw redirect(303, '/login?registered=true');
+			} else {
+				const errorData = await response.json().catch(() => ({ message: 'Błąd rejestracji' }));
+				return fail(400, {
+					message: errorData.message,
+					firstName: firstName as string,
+					lastName: lastName as string,
+					login: login as string
+				});
+			}
+		} catch (error) {
+			if (error instanceof Error && error.message.includes('redirect')) {
+				throw error;
+			}
+			return fail(500, {
+				message: 'Błąd serwera',
+				firstName: firstName as string,
+				lastName: lastName as string,
+				login: login as string
+			});
 		}
 	},
 } satisfies Actions;

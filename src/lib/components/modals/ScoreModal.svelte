@@ -49,5 +49,5 @@
 		</tbody>
 	</table>
 {:else}
-	<p class="text-gray-600">No constraints available for analysis.</p>
+	<p class="text-gray-600">Brak danych do analizy.</p>
 {/if}

@@ -14,7 +14,7 @@
           disabled={solving}
           aria-label="Solve"
   >
-    <i class="fas fa-play mr-2"></i> Solve
+    <i class="fas fa-play mr-2"></i> Generuj
   </button>
 
   <!-- Stop Button -->
@@ -29,7 +29,7 @@
 
   <!-- Score Display -->
   <div class="flex items-center justify-center px-6 py-2 bg-white text-gray-800 font-bold rounded-lg shadow-md">
-    <span>Score:</span>
+    <span>Wynik:</span>
     <span class="ml-2 text-blue-600">{schedule?.score ?? '?'}</span>
   </div>
 
@@ -39,6 +39,6 @@
           on:click={() => (showAnalysisModal = true)}
           aria-label="Analyze"
   >
-    <i class="fas fa-chart-bar mr-2"></i> Analyze
+    <i class="fas fa-chart-bar mr-2"></i> Analizuj
   </button>
 </div>

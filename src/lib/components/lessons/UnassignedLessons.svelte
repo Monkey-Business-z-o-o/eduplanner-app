@@ -22,7 +22,7 @@
     try {
       schedule.lessons = schedule.lessons.filter(lesson => lesson.id !== id);
     } catch (err) {
-      error = err instanceof Error ? err.message : 'Failed to delete lesson';
+      error = err instanceof Error ? err.message : 'Błąd usuwania lekcji';
       console.error('Error deleting lesson:', err);
     }
   }
@@ -42,7 +42,7 @@
 
 {#if error}
   <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-    <strong class="font-bold">Error!</strong>
+    <strong class="font-bold">Błąd!</strong>
     <span class="block sm:inline"> {error}</span>
   </div>
 {/if}

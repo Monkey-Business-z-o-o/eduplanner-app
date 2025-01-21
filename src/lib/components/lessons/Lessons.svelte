@@ -43,7 +43,7 @@
 </script>
 
 {#if loading}
-	<p>Loading lessons...</p>
+	<p>Wczytywanie lekcji...</p>
 {:else if error}
 	<p>Error: {error}</p>
 {:else if lessons}

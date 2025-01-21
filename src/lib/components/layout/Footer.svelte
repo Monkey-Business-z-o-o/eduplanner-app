@@ -22,10 +22,10 @@
 		<FooterLinkGroup
 			ulClass="flex flex-wrap items-center mb-6 text-sm text-gray-400 sm:mb-0 space-x-4"
 		>
-			<FooterLink href="/static" class="hover:text-gray-200 transition">O nas</FooterLink>
-			<FooterLink href="/static" class="hover:text-gray-200 transition">Polityka prywatności</FooterLink>
-			<FooterLink href="/static" class="hover:text-gray-200 transition">Licencje</FooterLink>
-			<FooterLink href="/static" class="hover:text-gray-200 transition">Kontakt</FooterLink>
+			<FooterLink href="/" class="hover:text-gray-200 transition">O nas</FooterLink>
+			<FooterLink href="/" class="hover:text-gray-200 transition">Polityka prywatności</FooterLink>
+			<FooterLink href="/" class="hover:text-gray-200 transition">Licencje</FooterLink>
+			<FooterLink href="/" class="hover:text-gray-200 transition">Kontakt</FooterLink>
 		</FooterLinkGroup>
 	</div>
 

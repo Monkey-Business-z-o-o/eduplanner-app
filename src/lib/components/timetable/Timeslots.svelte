@@ -59,7 +59,7 @@
                             role="tab"
                             aria-selected={activeTab === 'byRoom'}
                     >
-                        <span>By Room</span>
+                        <span>Pokoje</span>
                     </button>
                     <button
                             on:click={() => activeTab = 'byTeacher'}
@@ -67,7 +67,7 @@
                             role="tab"
                             aria-selected={activeTab === 'byTeacher'}
                     >
-                        <span>By Teacher</span>
+                        <span>Nauczyciele</span>
                     </button>
                     <button
                             on:click={() => activeTab = 'byStudentGroup'}
@@ -75,7 +75,7 @@
                             role="tab"
                             aria-selected={activeTab === 'byStudentGroup'}
                     >
-                        <span>By Student Group</span>
+                        <span>Grupy</span>
                     </button>
                 </div>
 
