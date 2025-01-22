@@ -7,7 +7,7 @@ export const actions = {
         const login = formData.get('login');
         const password = formData.get('password');
 
-        console.log('Form Data:', { login, password });
+        console.log('Dane formularza:', { login, password });
 
         try {
             const response = await fetch('https://backend.kebson.fun/login', {
@@ -16,13 +16,13 @@ export const actions = {
                 body: JSON.stringify({ login: login, password: password }),
             });
 
-            console.log('Request sent:', { login, password });
+            console.log('Wysłano żądanie:', { login, password });
 
             if (response.ok) {
                 const data = await response.json();
-                console.log('Login successful:', data);
+                console.log('Logowanie udane:', data);
 
-                // Set the auth token
+                // Ustawienie tokena autoryzacyjnego
                 cookies.set('authtoken', data.token, {
                     path: '/',
                     httpOnly: true,
@@ -30,7 +30,7 @@ export const actions = {
                     maxAge: 60 * 60 * 24 * 7,
                 });
 
-                // Set the username cookie
+                // Ustawienie ciasteczka z nazwą użytkownika
                 cookies.set('username', login as string, {
                     path: '/',
                     httpOnly: false,
@@ -38,18 +38,23 @@ export const actions = {
                     maxAge: 60 * 60 * 24 * 7,
                 });
 
-                // Redirect to the homepage (or any other page)
+                // Przekierowanie na stronę główną (lub inną stronę)
                 throw redirect(303, '/');
             } else {
-                const errorText = await response.text();
-                console.error('Login failed:', errorText);
+                const errorData = await response.json().catch(() => ({ message: 'Nieprawidłowe dane logowania' }));
+                console.error('Logowanie nieudane:', errorData.message);
                 cookies.delete('authtoken', { path: '/' });
                 cookies.delete('username', { path: '/' });
-                return fail(401, { message: 'Invalid credentials' });
+
+                if (errorData.message === 'User not found') {
+                    return fail(401, { message: 'użytkownik nieznany' });
+                }
+
+                return fail(401, { message: errorData.message || 'Nieprawidłowe dane logowania' });
             }
         } catch (error) {
-            console.error('Error during login:', error);
-            return fail(500, { message: 'Internal server error' });
+            console.error('Błąd podczas logowania:', error);
+            return fail(500, { message: 'Błąd serwera wewnętrznego' });
         }
     },
 } satisfies Actions;
