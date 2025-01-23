@@ -9,7 +9,6 @@ export const actions = {
 
         console.log('Dane formularza:', { login, password });
 
-        try {
             const response = await fetch('https://backend.kebson.fun/login', {
                 method: 'POST',
                 headers: { 'content-type': 'application/json' },
@@ -39,22 +38,23 @@ export const actions = {
                 });
 
                 // Przekierowanie na stronę główną (lub inną stronę)
-                throw redirect(303, '/');
+                return redirect(303, '/');
+
             } else {
                 const errorData = await response.json().catch(() => ({ message: 'Nieprawidłowe dane logowania' }));
                 console.error('Logowanie nieudane:', errorData.message);
                 cookies.delete('authtoken', { path: '/' });
                 cookies.delete('username', { path: '/' });
 
-                if (errorData.message === 'User not found') {
-                    return fail(401, { message: 'użytkownik nieznany' });
+                if (errorData.message === 'Unknown user') {
+                    return fail(401, { message: 'Użytkownik nieznany' });
                 }
 
-                return fail(401, { message: errorData.message || 'Nieprawidłowe dane logowania' });
+                if (errorData.message === 'Invalid password') {
+                    return fail(401, { message: 'Błędne hasło' });
+                }
+
+                return fail(401, { message: errorData.message || 'Nieudane logowanie. Sprawdź dane autentykacyjne lub skontaktuj się z obsługą klienta' });
             }
-        } catch (error) {
-            console.error('Błąd podczas logowania:', error);
-            return fail(500, { message: 'Błąd serwera wewnętrznego' });
-        }
     },
 } satisfies Actions;

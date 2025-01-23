@@ -10,7 +10,6 @@ export const actions = {
   const password = formData.get('password');
   const remember = formData.get('remember') === 'on';
 
-  try {
    const response = await fetch('https://backend.kebson.fun/register', {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -18,8 +17,6 @@ export const actions = {
    });
 
    if (response.ok) {
-    const data = await response.json();
-
     if (remember) {
      cookies.set('savedLogin', login as string, {
       path: '/',
@@ -30,8 +27,8 @@ export const actions = {
 
     throw redirect(303, '/login?registered=true');
    } else {
-    const errorData = await response.json().catch(() => ({ message: 'Błąd rejestracji' }));
-    if (errorData.message === 'User already exists') {
+    const errorData = await response.json().catch(() => ({ message: 'Nieudana rejestracja. Sprawdź dane autentykacyjne lub skontaktuj się z obsługą klienta' }));
+    if (errorData.message === 'Login already exists') {
      return fail(400, {
       message: 'Użytkownik o podanym loginie już istnieje',
       firstName: firstName as string,
@@ -40,22 +37,11 @@ export const actions = {
      });
     }
     return fail(400, {
-     message: errorData.message || 'Błąd rejestracji',
+     message: errorData.message || 'Nieudana rejestracja. Sprawdź dane autentykacyjne lub skontaktuj się z obsługą klienta',
      firstName: firstName as string,
      lastName: lastName as string,
      login: login as string
     });
    }
-  } catch (error) {
-   if (error instanceof Error && error.message.includes('redirect')) {
-    throw error;
-   }
-   return fail(500, {
-    message: 'Błąd serwera',
-    firstName: firstName as string,
-    lastName: lastName as string,
-    login: login as string
-   });
-  }
  },
 } satisfies Actions;
